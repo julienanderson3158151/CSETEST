@@ -54,8 +54,8 @@
             margin-top: 0;
         }
     </style>
-    <!-- Load the Google CSE script once -->
-    <script async src="https://cse.google.com/cse.js"></script>
+    <script async src="https://cse.google.com/cse.js?cx=851c5ad2091984fc1"></script>
+    <script async src="https://cse.google.com/cse.js?cx=14026596ade834828"></script>
 </head>
 <body>
     <h1>Unified Social Media Search</h1>
@@ -65,52 +65,25 @@
     </div>
     <div class="search-section">
         <h2>Facebook Results</h2>
-        <div class="gcse-search" 
-             data-queryParameterName="q" 
-             data-cx="851c5ad2091984fc1"
-             data-as_oq=""></div>
+        <div class="gcse-search" data-engine="facebook"></div>
     </div>
     <div class="search-section">
         <h2>Instagram Results</h2>
-        <div class="gcse-search" 
-             data-queryParameterName="q" 
-             data-cx="14026596ade834828"
-             data-as_oq=""></div>
+        <div class="gcse-search" data-engine="instagram"></div>
     </div>
-
     <script>
-        // Wait for CSE to load
         function performSearch() {
             const query = document.getElementById('searchInput').value;
-            if (!query) return; // Prevent empty search
-
-            // Get all CSE elements
-            const searchElements = document.querySelectorAll('.gcse-search');
-            
-            searchElements.forEach(element => {
-                // Check if google.search.cse.element exists
-                if (window.google && window.google.search && window.google.search.cse) {
-                    const cx = element.getAttribute('data-cx');
-                    const gCSEElement = google.search.cse.element.getElement(element);
-                    if (gCSEElement) {
-                        gCSEElement.execute(query);
-                    } else {
-                        // Fallback: manually trigger search if element isn't initialized
-                        element.setAttribute('data-as_q', query);
-                        if (typeof window.__gcse !== 'undefined' && window.__gcse.parsetags !== 'explicit') {
-                            google.search.cse.element.render(element);
-                        }
-                    }
+            const searchEngines = document.querySelectorAll('.gcse-search');
+            searchEngines.forEach(engine => {
+                const input = engine.querySelector('input.gsc-input');
+                if (input) {
+                    input.value = query;
+                    const button = engine.querySelector('button.gsc-search-button');
+                    if (button) button.click();
                 }
             });
         }
-
-        // Add enter key support
-        document.getElementById('searchInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                performSearch();
-            }
-        });
     </script>
 </body>
 </html>
