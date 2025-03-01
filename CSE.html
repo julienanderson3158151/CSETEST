@@ -74,11 +74,14 @@
     <script>
         function performSearch() {
             const query = document.getElementById('searchInput').value;
+            if (!query) return; // Prevent empty search
             const searchEngines = document.querySelectorAll('.gcse-search');
             searchEngines.forEach(engine => {
                 const input = engine.querySelector('input.gsc-input');
                 if (input) {
                     input.value = query;
+                    const event = new Event('input', { bubbles: true });
+                    input.dispatchEvent(event);
                     const button = engine.querySelector('button.gsc-search-button');
                     if (button) button.click();
                 }
